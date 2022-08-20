@@ -1,0 +1,27 @@
+{
+	"name": "nmeatcptime",
+	"version": "1.0.0",
+	"author": "@Inrixia",
+	"license": "ISC",
+	"scripts": {
+		"prep": "npm install && npm run build",
+		"prestart": "tsc",
+		"build": "tsc && pkg ./dist/nmea.js --out-path=./build -t latest-linux,latest-mac,latest-win --compress GZip",
+		"buildLinux": "tsc && pkg ./dist/nmea.js --out-path=./build -t latest-linux",
+		"buildMac": "tsc && pkg ./dist/nmea.js --out-path=./build -t latest-mac",
+		"buildWin": "tsc && pkg ./dist/nmea.js --out-path=./build -t latest-win"
+	},
+	"dependencies": {
+		"@types/admin-check": "^1.1.0",
+		"@types/args": "^5.0.0",
+		"admin-check": "^1.1.3",
+		"args": "^5.0.3",
+		"gps": "^0.6.1",
+		"pkg": "^5.8.0",
+		"set-system-clock": "^1.0.4",
+		"typescript": "^4.7.4"
+	},
+	"devDependencies": {
+		"@types/node": "^18.7.8"
+	}
+}
