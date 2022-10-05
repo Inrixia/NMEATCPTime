@@ -1,5 +1,5 @@
 import { createConnection } from "net";
-import { DateTimeControl } from "set-system-clock";
+import DateTimeControl from "@inrixia/set-system-clock";
 import admin from "admin-check";
 import args from "args";
 import GPS from "gps";
@@ -20,9 +20,8 @@ const start = async () => {
 	if (port === undefined) exitWithError("You must specify a port to connect to");
 
 	const gps = new GPS();
-	const dtc = new DateTimeControl();
 	gps.on("data", (data: ZDA) => {
-		if (data.valid) dtc.setDateTime(data.time);
+		if (data.valid) DateTimeControl.setDateTime(data.time);
 	});
 
 	console.log(`Connecting to ${host}:${port}`);
