@@ -11,17 +11,20 @@ const exitWithError = (err: string) => {
 	process.exit(1);
 };
 
-type Flags = { host: string; port: string };
+type Flags = { host: string; port: string; maxDifference: number };
 const start = async () => {
-	args.option("host", "The tcp ip address to connect to").option("port", "The tcp port to connect to");
-	const { host, port } = <Flags>args.parse(process.argv);
+	args
+		.option("host", "The tcp ip address to connect to")
+		.option("port", "The tcp port to connect to")
+		.option("maxDifference", "The maximum difference in seconds allowed between system clock and gps time", 0, (v) => parseInt(v) * 1000);
+	const { host, port, maxDifference } = <Flags>args.parse(process.argv);
 
 	if (host === undefined) exitWithError("You must specify a host to connect to");
 	if (port === undefined) exitWithError("You must specify a port to connect to");
 
 	const gps = new GPS();
 	gps.on("data", (data: ZDA) => {
-		if (data.valid) DateTimeControl.setDateTime(data.time);
+		if (data.valid && Math.abs(data.time.getTime() - Date.now()) < maxDifference) DateTimeControl.setDateTime(data.time);
 	});
 
 	console.log(`Connecting to ${host}:${port}`);
