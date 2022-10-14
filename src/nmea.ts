@@ -24,7 +24,13 @@ const start = async () => {
 
 	const gps = new GPS();
 	gps.on("data", (data: ZDA) => {
-		if (data.valid && Math.abs(data.time.getTime() - Date.now()) < maxDifference) DateTimeControl.setDateTime(data.time);
+		const now = new Date();
+		if (data.valid && Math.abs(data.time.getTime() - now.getTime()) < maxDifference) {
+			// If we are on a rollover dont set time
+			if (!(now.getDay() === 23 && now.getMinutes() === 59 && now.getSeconds() >= 58)) {
+				DateTimeControl.setDateTime(data.time);
+			}
+		}
 	});
 
 	console.log(`Connecting to ${host}:${port}`);
