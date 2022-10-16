@@ -27,7 +27,8 @@ const start = async () => {
 		const now = new Date();
 		if (data.valid && Math.abs(data.time.getTime() - now.getTime()) < maxDifference) {
 			// If we are on a rollover dont set time
-			if (!(now.getDay() === 23 && now.getMinutes() === 59 && now.getSeconds() >= 58)) {
+			const seconds = now.getSeconds();
+			if (!(now.getMinutes() === 59 && (seconds >= 57 || seconds <= 3))) {
 				DateTimeControl.setDateTime(data.time);
 			}
 		}
