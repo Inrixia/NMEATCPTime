@@ -38,7 +38,7 @@ const start = async () => {
 
 	let lineBuffer = "";
 	createConnection({ host, port: +port })
-		.on("connect", () => console.log(`Connected to ${host}:${port}`))
+		.on("connect", () => console.log(`[${Date.now()}] - Connected to ${host}:${port}`))
 		.on("data", (data) => {
 			lineBuffer += data.toString();
 			let startIndex = 0;
